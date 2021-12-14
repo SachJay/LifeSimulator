@@ -14,6 +14,12 @@ config/name="LifeSimulation"
 run/main_scene="res://Scenes/World.tscn"
 config/icon="res://Sprites/icon.png"
 
+[display]
+
+window/size/width=1821
+window/size/height=977
+window/stretch/mode="2d"
+
 [global]
 
 window=false
