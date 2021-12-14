@@ -11,8 +11,8 @@ config_version=4
 [application]
 
 config/name="LifeSimulation"
-run/main_scene="res://mainscene.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://Scenes/World.tscn"
+config/icon="res://Sprites/icon.png"
 
 [global]
 
