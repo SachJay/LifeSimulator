@@ -8,10 +8,12 @@ var timedout = false
 
 var xVelo = 500
 var yVelo = 500
-var xDir = 500
-var yDir = 500
+var xDir = 0
+var yDir = 0
 var foodConsumed = 0
 var vector
+
+var counter = 0
 
 func _ready():
 	rng.randomize()
@@ -31,6 +33,10 @@ func _physics_process(delta):
 
 func _on_Timer_timeout():
 	timedout = true
+	counter+=1
+	if counter == 60: #every 20, 1 fodd spawns
+		consume_food()
+		counter = 0
 
 func _on_Area2D_body_entered(body):
 	if "food" in body.name:
@@ -45,9 +51,10 @@ func consume_food():
 		
 func _on_Area2D_area_entered(area):
 	if "food" in area.name:
-		if foodConsumed == 2:
+		if foodConsumed > 1:
 			var animal = load("res://Scenes/animal.tscn").instance()
-			self.add_child(animal)
+			animal.position = self.position
+			get_tree().get_root().get_node("World").add_child(animal)
 		else:
 			foodConsumed += 1
 		area.queue_free()

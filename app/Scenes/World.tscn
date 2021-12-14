@@ -10,69 +10,66 @@ position = Vector2( -29, -19 )
 script = ExtResource( 4 )
 
 [node name="animal8" parent="." instance=ExtResource( 2 )]
-position = Vector2( -371, -145 )
+position = Vector2( 180, 236 )
 
 [node name="animal9" parent="." instance=ExtResource( 2 )]
-position = Vector2( -379, 219 )
-
-[node name="animal13" parent="." instance=ExtResource( 2 )]
-position = Vector2( -51, 211 )
-
-[node name="animal14" parent="." instance=ExtResource( 2 )]
-position = Vector2( 169, 219 )
-
-[node name="animal15" parent="." instance=ExtResource( 2 )]
-position = Vector2( 389, 223 )
+position = Vector2( -152, 232 )
 
 [node name="animal10" parent="." instance=ExtResource( 2 )]
-position = Vector2( 389, -142 )
+position = Vector2( -424, 3 )
 
 [node name="animal11" parent="." instance=ExtResource( 2 )]
-position = Vector2( 133, -130 )
+position = Vector2( -135, -225 )
 
 [node name="animal12" parent="." instance=ExtResource( 2 )]
-position = Vector2( -107, -145 )
+position = Vector2( 160, -224 )
+
+[node name="animal13" parent="." instance=ExtResource( 2 )]
+position = Vector2( 409, 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 40, 32 )
 current = true
 
 [node name="food" parent="." instance=ExtResource( 3 )]
 light_mask = 4
-position = Vector2( -179, 99 )
+position = Vector2( -315, 170 )
+
+[node name="food7" parent="." instance=ExtResource( 3 )]
+light_mask = 4
+position = Vector2( 369, 192 )
 
 [node name="food6" parent="." instance=ExtResource( 3 )]
-position = Vector2( 261, -53 )
+position = Vector2( 379, -188 )
 
 [node name="food2" parent="." instance=ExtResource( 3 )]
-position = Vector2( 29, 99 )
+position = Vector2( 23, 176 )
 
 [node name="food3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 645, 515 )
 
 [node name="food4" parent="." instance=ExtResource( 3 )]
-position = Vector2( -243, -53 )
+position = Vector2( -299, -162 )
 
 [node name="food5" parent="." instance=ExtResource( 3 )]
-position = Vector2( 37, -61 )
+position = Vector2( 29, -163 )
 
 [node name="wall" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( -528, 13 )
+position = Vector2( -579, -5 )
 collision_layer = 1
 
 [node name="wall2" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 16, -285 )
+position = Vector2( -35, -333 )
 scale = Vector2( 10, 0.1 )
 
 [node name="wall3" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 597, 16 )
+position = Vector2( 569, -5 )
 
 [node name="wall4" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 16, 354 )
+position = Vector2( 5, 331 )
 scale = Vector2( 10, 0.1 )
 
 [node name="Timer" type="Timer" parent="."]
