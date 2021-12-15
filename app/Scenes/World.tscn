@@ -22,27 +22,6 @@ script = ExtResource( 4 )
 [node name="animal" parent="animalGroup" instance=ExtResource( 2 )]
 position = Vector2( 904, 477 )
 
-[node name="animal2" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
-[node name="animal3" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
-[node name="animal4" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
-[node name="animal5" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
-[node name="animal6" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
-[node name="animal7" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
-[node name="animal8" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 904, 477 )
-
 [node name="foodGroup" type="Node" parent="."]
 
 [node name="food" parent="foodGroup" instance=ExtResource( 5 )]

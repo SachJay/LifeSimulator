@@ -10,31 +10,40 @@ var foodConsumed = 0
 #stat variables
 var startingEnergy = 300
 var energy = startingEnergy
-var speed = 1000
+var speed = 2000
 var speedConstant = 10000
+var senseRad = 1000
 
 #movement variables
-var xDir = 0
-var yDir = 0
+var xDir = 0.0
+var yDir = 0.0
 var vector
+
+var moveToTarget = false
+var targetName = ""
 
 func _ready():
 	rng.randomize()
 	waittime = timer.wait_time
 	self.modulate = Color(map_speed(speed), 0, 0)
+	$SenseDetection/CollisionShape2D.shape.radius = senseRad #make this a trait and pass it down
 	
 func _physics_process(delta):
+	if moveToTarget and !get_tree().get_root().get_node("World").get_node("foodGroup").has_node(targetName):
+		moveToTarget = false
+	
+	if timedout:
+		if !moveToTarget:
+			xDir = rng.randf_range(-1.0, 1.0)
+			yDir = rng.randf_range(-1.0, 1.0)
+		timedout = false
+		
 	vector = Vector2(delta * xDir * speed * waittime, delta * yDir * speed * waittime)
 	move_and_collide(vector)
 	
-	if timedout:
-		xDir = rng.randf_range(-10.0, 10.0)
-		yDir = rng.randf_range(-10.0, 10.0)
-		timedout = false
-
 func _on_Timer_timeout(): 
 	timedout = true
-	energy -= pow(speed, 1.25)/speedConstant 
+	energy -= get_energy_cost()
 	
 	if energy < 0: 
 		consume_food()
@@ -59,10 +68,10 @@ func _on_Area2D_area_entered(area):
 		else:
 			foodConsumed += 1
 		area.queue_free()
+	moveToTarget = false
 
 func create_child():
 	var animal = load("res://Scenes/animal.tscn").instance()
-	speed = get_tree().get_root().get_node("World").animalSpeed
 	
 	animal.position = self.position
 	animal.speed = speed + rng.randf_range(-100.0, 100.0)
@@ -84,4 +93,40 @@ func map(inputLow, inputHigh, outputLow, outputHigh, value):
 	return outputLow + outputRange * percent
 	
 func map_speed(speedValue):
-	return map(100, 1500, 0, 1, speedValue) 
+	return map(1500, 2500, 0, 1, speedValue) 
+	
+func get_energy_cost():
+	return pow(speed, 1.25)/speedConstant 
+
+func _on_SenseDetection_area_entered(area):
+	if moveToTarget:
+		return
+	
+	var distinationX = area.position.x
+	var distinationY = area.position.y
+
+	var xDist:float = area.position.x - self.position.x
+	var yDist:float = area.position.y - self.position.y
+	
+	moveToTarget = true
+	targetName = area.name
+	
+	if abs(xDist) < 1:
+		xDir = 0.0
+		yDir = 1.0 / 2.0
+		return
+		
+	if abs(yDist) < 1:
+		xDir = 1.0 / 2.0
+		yDir = 0
+		return
+
+	if abs(xDist) > abs(yDist):
+		xDir = xDist / abs(xDist) / 2.0
+		yDir = yDist / abs(xDist) / 2.0
+	else:
+		yDir = yDist / abs(yDist) / 2.0
+		xDir = xDist / abs(yDist) / 2.0
+		
+func distance(x1, y1, x2, y2):
+	return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2))
