@@ -44,7 +44,7 @@ func _physics_process(delta):
 		timedout = false
 		
 	vector = Vector2(delta * xDir * speed * waittime, delta * yDir * speed * waittime)
-	move_and_collide(vector)
+	return move_and_collide(vector)
 	
 func _on_Timer_timeout(): 
 	timedout = true
@@ -87,7 +87,7 @@ func _on_Area2D_area_entered(area):
 	moveToTarget = false
 
 func create_child():
-	var animal = load("res://Scenes/animal.tscn").instance()
+	var animal = load("res://Scenes/herbivore.tscn").instance()
 	
 	animal.position = self.position
 	animal.speed = trait_formatter(speed + rng.randf_range(-100.0, 100.0), 100, 10000)

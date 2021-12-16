@@ -17,7 +17,7 @@ var speedConstant = 10000
 
 #NOTE: changing this requires changes in world
 var speed = 2000.0
-var senseRad = 50
+var senseRad = 100
 
 #movement variables
 var xDir = 0.0
@@ -34,7 +34,7 @@ func _ready():
 	set_sense_rad(senseRad)
 	
 func _physics_process(delta):
-	if moveToTarget and !get_tree().get_root().get_node("World").get_node("foodGroup").has_node(targetName):
+	if moveToTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(targetName):
 		moveToTarget = false
 	
 	if timedout:
@@ -44,7 +44,7 @@ func _physics_process(delta):
 		timedout = false
 		
 	vector = Vector2(delta * xDir * speed * waittime, delta * yDir * speed * waittime)
-	move_and_collide(vector)
+	return move_and_collide(vector)
 	
 func _on_Timer_timeout(): 
 	timedout = true
@@ -55,8 +55,9 @@ func _on_Timer_timeout():
 		energy = startingEnergy
 
 func _on_Area2D_body_entered(body):
-	if "food" in body.name:
-		foodConsumed += 1
+	print(body.name)
+	if "herb" in body.name:
+		eat_food()
 		body.queue_free()
 	elif "up" in body.name:
 		self.position.y = cameraY-offset
@@ -77,17 +78,15 @@ func consume_food():
 	else:
 		foodConsumed -= 1
 		
-func _on_Area2D_area_entered(area):
-	if "food" in area.name:
-		if foodConsumed > -2:
-			create_child()
-		else:
-			foodConsumed += 1
-		area.queue_free()
+func eat_food():
+	if foodConsumed > -2:
+		create_child()
+	else:
+		foodConsumed += 1
 	moveToTarget = false
 
 func create_child():
-	var animal = load("res://Scenes/animal.tscn").instance()
+	var animal = load("res://Scenes/carnivore.tscn").instance()
 	
 	animal.position = self.position
 	animal.speed = trait_formatter(speed + rng.randf_range(-100.0, 100.0), 100, 10000)
@@ -128,7 +127,8 @@ func trait_formatter(input, minInput, maxInput):
 	return input
 		
 func _on_SenseDetection_area_entered(area):
-	if moveToTarget or !"food" in area.name:
+	#print(area.name) returns AREA2D
+	if moveToTarget or !"herb" in area.name:
 		return
 
 	var xDist:float = area.position.x - self.position.x
