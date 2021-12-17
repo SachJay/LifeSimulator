@@ -12,7 +12,7 @@ extents = Vector2( 20.1481, 20.1481 )
 [sub_resource type="CircleShape2D" id=3]
 radius = 48.8308
 
-[node name="herb" type="KinematicBody2D" groups=["animals"]]
+[node name="herb" type="KinematicBody2D" groups=["animals", "herb"]]
 modulate = Color( 0, 0, 0, 1 )
 scale = Vector2( 1.5, 1.5 )
 collision_mask = 6
@@ -31,7 +31,7 @@ shape = SubResource( 1 )
 [node name="Area2D" type="Area2D" parent="."]
 scale = Vector2( 0.75, 0.75 )
 collision_layer = 2
-collision_mask = 5
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( -5.29819e-08, 0 )
@@ -44,7 +44,7 @@ autostart = true
 
 [node name="SenseDetection" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SenseDetection"]
 shape = SubResource( 3 )
@@ -53,3 +53,5 @@ shape = SubResource( 3 )
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="area_entered" from="SenseDetection" to="." method="_on_SenseDetection_area_entered"]
+[connection signal="body_entered" from="SenseDetection" to="." method="_on_SenseDetection_body_entered"]
+[connection signal="body_exited" from="SenseDetection" to="." method="_on_SenseDetection_body_exited"]

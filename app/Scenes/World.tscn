@@ -15,7 +15,6 @@ outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
 
 [node name="World" type="Node2D"]
-position = Vector2( 908, 488 )
 script = ExtResource( 4 )
 
 [node name="animalGroup" type="Node" parent="."]
@@ -23,8 +22,38 @@ script = ExtResource( 4 )
 [node name="herb1" parent="animalGroup" instance=ExtResource( 2 )]
 position = Vector2( 904, 477 )
 
+[node name="herb2" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 652, 211 )
+
+[node name="herb3" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 201, 279 )
+
+[node name="herb4" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 326, 685 )
+
+[node name="herb5" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 1203, 227 )
+
+[node name="herb6" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 1321, 597 )
+
+[node name="herb7" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 965, 746 )
+
+[node name="herb8" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 625, 805 )
+
+[node name="herb9" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 1305, 821 )
+
+[node name="herb10" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 929, 227 )
+
 [node name="carnivore" parent="animalGroup" instance=ExtResource( 6 )]
 position = Vector2( 524, 450 )
+
+[node name="carnivore2" parent="animalGroup" instance=ExtResource( 6 )]
+position = Vector2( 1356, 419 )
 
 [node name="foodGroup" type="Node" parent="."]
 
@@ -66,25 +95,25 @@ position = Vector2( 1527, 774 )
 
 [node name="left" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( -967, 41 )
-scale = Vector2( 1, 3 )
+position = Vector2( -5305, 354 )
+scale = Vector2( 0.5, 11 )
 collision_layer = 1
 
 [node name="up" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 211, -512 )
+position = Vector2( 79, -2882 )
 scale = Vector2( 100, 0.1 )
 collision_layer = 1
 
 [node name="right" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 961, -193 )
-scale = Vector2( 1, 3 )
+position = Vector2( 2839, -435 )
+scale = Vector2( 0.5, 11 )
 collision_layer = 1
 
 [node name="down" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( -204, 511 )
+position = Vector2( -415, 1869 )
 scale = Vector2( 100, 0.1 )
 collision_layer = 1
 
@@ -98,13 +127,9 @@ layer = -1
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -7.0
-margin_top = -3.0
-margin_right = -7.0
-margin_bottom = -3.0
+margin_right = 905.0
 color = Color( 0.788235, 0.788235, 0.788235, 1 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -126,7 +151,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TotalAnimal" type="Label" parent="CanvasLayer2"]
+[node name="TotalHerb" type="Label" parent="CanvasLayer2"]
 modulate = Color( 0, 0, 0, 1 )
 self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 1541.0
@@ -135,48 +160,49 @@ margin_right = 1839.0
 margin_bottom = 84.0
 theme = SubResource( 1 )
 custom_fonts/font = SubResource( 2 )
-text = "# of Animals: 40"
+text = "# of Herbs: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TotalCarn" type="Label" parent="CanvasLayer2"]
+modulate = Color( 0, 0, 0, 1 )
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 1541.0
+margin_top = 89.0
+margin_right = 1839.0
+margin_bottom = 116.0
+theme = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
+text = "# of Carns: 0"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LineEdit" type="LineEdit" parent="CanvasLayer2"]
-margin_left = 2057.0
-margin_top = 271.0
-margin_right = 2115.0
-margin_bottom = 295.0
+margin_left = 2325.0
+margin_top = 597.0
+margin_right = 2383.0
+margin_bottom = 621.0
 rect_scale = Vector2( 2.67667, 2.12402 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AverageSpeedLabel" type="Label" parent="CanvasLayer2"]
-modulate = Color( 0, 0, 0, 1 )
-self_modulate = Color( 0, 0, 0, 1 )
-margin_left = 1538.0
-margin_top = 91.0
-margin_right = 1836.0
-margin_bottom = 118.0
-theme = SubResource( 1 )
-custom_fonts/font = SubResource( 2 )
-text = "Average Speed: 0"
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer2"]
+margin_left = 1574.0
+margin_top = 140.0
+margin_right = 1722.0
+margin_bottom = 180.0
+text = "asfa"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AverageSenseLabel" type="Label" parent="CanvasLayer2"]
-modulate = Color( 0, 0, 0, 1 )
-self_modulate = Color( 0, 0, 0, 1 )
-margin_left = 1538.0
-margin_top = 123.0
-margin_right = 1836.0
-margin_bottom = 150.0
-theme = SubResource( 1 )
-custom_fonts/font = SubResource( 2 )
-text = "Average Sense: 0"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="MainCamera" type="Camera2D" parent="."]
+position = Vector2( 0, -11 )
+current = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="text_entered" from="CanvasLayer2/LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="item_selected" from="CanvasLayer2/OptionButton" to="." method="_on_OptionButton_item_selected"]

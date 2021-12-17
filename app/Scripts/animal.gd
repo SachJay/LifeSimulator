@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
-var cameraX = ProjectSettings.get_setting("display/window/size/width")
-var cameraY = ProjectSettings.get_setting("display/window/size/height")
+var maxX = 100
+var maxY = 100
 
 #setup variables
 onready var timer = $Timer
@@ -11,13 +11,19 @@ var timedout = false
 var foodConsumed = 0
 
 #stat variables
-var startingEnergy = 15000
+var startingEnergy = 750000
 var energy = startingEnergy
-var speedConstant = 10000
 
-#NOTE: changing this requires changes in world
-var speed = 2000.0
-var senseRad = 50
+var startingSpeed = 1000.0
+var speed = startingSpeed
+var speedConstant = 20
+var speedCoefficient = 1.35
+var speedVariance = 100
+
+var startingSenseRad = 50
+var senseRad = startingSenseRad
+var senseConstant = 1
+var senseCoefficient = 1
 
 #movement variables
 var xDir = 0.0
@@ -27,74 +33,46 @@ var vector
 var moveToTarget = false
 var targetName = ""
 var offset = 25
+var reproduceAmount = 1
 
-func _ready():
-	rng.randomize()
-	waittime = timer.wait_time
-	set_sense_rad(senseRad)
-	
-func _physics_process(delta):
-	if moveToTarget and !get_tree().get_root().get_node("World").get_node("foodGroup").has_node(targetName):
-		moveToTarget = false
-	
-	if timedout:
-		if !moveToTarget:
-			xDir = rng.randf_range(-1.0, 1.0)
-			yDir = rng.randf_range(-1.0, 1.0)
-		timedout = false
-		
-	vector = Vector2(delta * xDir * speed * waittime, delta * yDir * speed * waittime)
-	move_and_collide(vector)
-	
+var age = 0
+
+enum {SPEED, SENSE, ALL}
+var visible_trait = SPEED
+
 func _on_Timer_timeout(): 
 	timedout = true
+	age += 1
 	energy -= get_energy_cost()
+	
+	if age == 25000:
+		get_tree().get_root().get_node("World").whenAnimalDied(self)
+		self.queue_free()
 	
 	if energy < 0: 
 		consume_food()
 		energy = startingEnergy
 
-func _on_Area2D_body_entered(body):
-	if "food" in body.name:
-		foodConsumed += 1
-		body.queue_free()
-	elif "up" in body.name:
-		self.position.y = cameraY-offset
-		
-	elif "down" in body.name:
-		self.position.y = offset
+func get_energy_cost():
+	return pow(speed/speedConstant, speedCoefficient) * pow(senseRad/senseConstant, senseCoefficient)
 
-	elif "left" in body.name:
-		self.position.x = cameraX-offset
-		
-	elif "right" in body.name:
-		self.position.x = offset
-			
 func consume_food():
 	if foodConsumed == 0:
 		get_tree().get_root().get_node("World").whenAnimalDied(self)
 		self.queue_free()
 	else:
 		foodConsumed -= 1
-		
-func _on_Area2D_area_entered(area):
-	if "food" in area.name:
-		if foodConsumed > -2:
-			create_child()
-		else:
-			foodConsumed += 1
-		area.queue_free()
+
+func eat_food():
+	if foodConsumed > reproduceAmount:
+		foodConsumed = 0
+		create_child()
+	else:
+		foodConsumed += 1
 	moveToTarget = false
 
 func create_child():
-	var animal = load("res://Scenes/animal.tscn").instance()
-	
-	animal.position = self.position
-	animal.speed = trait_formatter(speed + rng.randf_range(-100.0, 100.0), 100, 10000)
-	animal.set_sense_rad(trait_formatter(senseRad + rng.randf_range(-10.0, 10.0), 20, 750))
-	animal.modulate = Color(map_speed(animal.speed), map_sense(animal.senseRad), 0)
-	get_tree().get_root().get_node("World").get_node("animalGroup").call_deferred("add_child", animal)
-	get_tree().get_root().get_node("World").whenAnimalCreated(animal)
+	pass #abstract this shit
 
 func map(inputLow, inputHigh, outputLow, outputHigh, value):
 	if value < inputLow:
@@ -109,34 +87,35 @@ func map(inputLow, inputHigh, outputLow, outputHigh, value):
 	
 	return outputLow + outputRange * percent
 
-func map_speed(speedValue):
-	return map(1500, 2500, 0, 1, speedValue) 
-
-func map_sense(senseValue):
-	return map(10, 110, 0, 1, senseValue) 
+func map_trait(coefficient, constant, starting, value):
+	var color = map(calculate_map_range_low(coefficient, constant, starting), calculate_map_range_high(coefficient, constant, starting), 0, 1, value)
+	return color
 	
-func get_energy_cost():
-	return pow(speed, 1.25)/speedConstant * senseRad
-
-func trait_formatter(input, minInput, maxInput):
-	if input < minInput:
-		return minInput
+func calculate_map_range_low(coeff, constVar, starting):
+	var variance =  startingEnergy / (25000.0 * pow(coeff, 2))
+	return starting - variance * constVar
 	
-	if input > maxInput:
-		return maxInput
-	
-	return input
-		
-func _on_SenseDetection_area_entered(area):
-	if moveToTarget or !"food" in area.name:
-		return
+func calculate_map_range_high(coeff, constVar, starting):
+	var variance =  startingEnergy / (25000.0 * pow(coeff, 2))
+	return starting + variance * constVar
 
-	var xDist:float = area.position.x - self.position.x
-	var yDist:float = area.position.y - self.position.y
+func distance(x1, y1, x2, y2):
+	return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2))
+
+func set_sense_rad(senseRadInput):
+	var shape = CircleShape2D.new()
+	shape.set_radius(senseRadInput)
+	$SenseDetection/CollisionShape2D.shape = shape
+	
+	senseRad = senseRadInput
+
+func calculateDirection(body):
+	var xDist:float = body.position.x - self.position.x
+	var yDist:float = body.position.y - self.position.y
 
 	moveToTarget = true
-	targetName = area.name
-	
+	targetName = body.name
+
 	if abs(xDist) < 1:
 		xDir = 0.0
 		yDir = 1.0 / 2.0
@@ -153,13 +132,47 @@ func _on_SenseDetection_area_entered(area):
 	else:
 		yDir = yDist / abs(yDist) / 2.0
 		xDir = xDist / abs(yDist) / 2.0
-
-func distance(x1, y1, x2, y2):
-	return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2))
-
-func set_sense_rad(senseRadInput):
-	var shape = CircleShape2D.new()
-	shape.set_radius(senseRadInput)
-	$SenseDetection/CollisionShape2D.shape = shape
+		
+func trait_formatter(input, minInput, maxInput):
+	if input < minInput:
+		return minInput
 	
-	senseRad = senseRadInput
+	if input > maxInput:
+		return maxInput
+	
+	return input
+	
+func handle_wall_collision(body):
+	pass
+
+func wall_tp(body):
+	if "up" in body.name:
+		self.position.y = maxY-offset
+		
+	elif "down" in body.name:
+		self.position.y = offset
+
+	elif "left" in body.name:
+		self.position.x = maxX-offset
+		
+	elif "right" in body.name:
+		self.position.x = offset
+
+func set_next_gen_traits(animal):
+	animal.position = self.position
+	animal.speed = trait_formatter(speed + rng.randf_range(-speedVariance, speedVariance), 500, 2000)
+	animal.set_sense_rad(trait_formatter(senseRad + rng.randf_range(-10.0, 10.0), 20, 200))
+	animal.modulate = visualise_trait(visible_trait)
+	animal.visible_trait = visible_trait
+	
+func visualise_trait(trait):
+	if trait == SPEED:
+		return Color(map_trait(speedCoefficient, speedConstant, startingSpeed, speed), 0, 0)
+	elif trait == SENSE:
+		return Color(0, map_trait(senseCoefficient, senseConstant, startingSenseRad, senseRad), 0)
+	elif trait == ALL:
+		return Color(map_trait(speedCoefficient, speedConstant, startingSpeed, speed), map_trait(senseCoefficient, senseConstant, startingSenseRad, senseRad), 0)
+
+func update_modulate(trait):
+	visible_trait = trait
+	self.modulate = visualise_trait(trait)
