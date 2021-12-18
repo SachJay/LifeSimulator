@@ -24,6 +24,7 @@ var startingSenseRad = 50
 var senseRad = startingSenseRad
 var senseConstant = 1
 var senseCoefficient = 1
+var senseVariance = 10
 
 #movement variables
 var xDir = 0.0
@@ -34,8 +35,10 @@ var moveToTarget = false
 var targetName = ""
 var offset = 25
 var reproduceAmount = 1
+var postreproduceAmount = 0
 
 var age = 0
+var maxAge = 500
 
 enum {SPEED, SENSE, ALL}
 var visible_trait = SPEED
@@ -45,7 +48,7 @@ func _on_Timer_timeout():
 	age += 1
 	energy -= get_energy_cost()
 	
-	if age == 25000:
+	if age > maxAge:
 		get_tree().get_root().get_node("World").whenAnimalDied(self)
 		self.queue_free()
 	
@@ -65,7 +68,7 @@ func consume_food():
 
 func eat_food():
 	if foodConsumed > reproduceAmount:
-		foodConsumed = 0
+		foodConsumed = postreproduceAmount
 		create_child()
 	else:
 		foodConsumed += 1
@@ -161,7 +164,7 @@ func wall_tp(body):
 func set_next_gen_traits(animal):
 	animal.position = self.position
 	animal.speed = trait_formatter(speed + rng.randf_range(-speedVariance, speedVariance), 500, 2000)
-	animal.set_sense_rad(trait_formatter(senseRad + rng.randf_range(-10.0, 10.0), 20, 200))
+	animal.set_sense_rad(trait_formatter(senseRad + rng.randf_range(-senseVariance, senseVariance), 20, 200))
 	animal.modulate = visualise_trait(visible_trait)
 	animal.visible_trait = visible_trait
 	

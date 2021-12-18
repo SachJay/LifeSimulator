@@ -1,13 +1,19 @@
 extends "res://Scripts/animal.gd"
 
+func _init():
+	speed = 1200.0
+	senseRad = 75
+	startingEnergy = 3500000
+	speedVariance = 300
+	senseVariance = 30
+	postreproduceAmount = 1
+	reproduceAmount = 1
+	maxAge = 10000
+	
 func _ready():
+	set_sense_rad(senseRad)
 	rng.randomize()
 	waittime = timer.wait_time
-	set_sense_rad(senseRad)
-	speed = 1200.0
-	senseRad = 65
-	startingEnergy = 1000000
-	speedVariance = 300
 	maxX = get_tree().get_root().get_node("World").get_node("right").position.x
 	maxY = get_tree().get_root().get_node("World").get_node("down").position.y
 	

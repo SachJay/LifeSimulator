@@ -42,11 +42,11 @@ func _process(delta):
 	camera.position.y -= delta * (Input.get_action_strength("run_up") - Input.get_action_strength("run_down")) * 1000
 	camera.zoom.x += delta * (Input.get_action_strength("zoom_in") - Input.get_action_strength("zoom_out")) * 5
 	camera.zoom.y += delta * (Input.get_action_strength("zoom_in") - Input.get_action_strength("zoom_out")) * 5
-	if(camera.zoom.x < 0):
-		camera.zoom.x = 0
+	if(camera.zoom.x < 0.1):
+		camera.zoom.x = 0.1
 		
-	if(camera.zoom.y < 0):
-		camera.zoom.y = 0
+	if(camera.zoom.y < 0.1):
+		camera.zoom.y = 0.1
 		
 func _on_Timer_timeout():
 	counter+=1
@@ -62,8 +62,7 @@ func _on_Timer_timeout():
 
 	if counter % 10 == 0:
 		totalHerb.text = "# of Herbs: " + str(get_tree().get_nodes_in_group("herb").size())
-		totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
-		pass #end of day
+		totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size()/2)
 
 func whenAnimalCreated(animal):
 	pass
