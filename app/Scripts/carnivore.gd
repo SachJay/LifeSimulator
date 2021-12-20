@@ -2,8 +2,8 @@ extends "res://Scripts/animal.gd"
 
 func _init():
 	speed = 1200.0
-	senseRad = 75
-	startingEnergy = 3500000
+	senseRad = 200
+	startingEnergy = 35000000
 	speedVariance = 300
 	senseVariance = 30
 	postreproduceAmount = 1
@@ -21,6 +21,7 @@ func _physics_process(delta):
 	
 	if moveToTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(targetName):
 		moveToTarget = false
+		currentRunCoeff = 1
 	
 	if timedout:
 		if !moveToTarget:
@@ -30,7 +31,7 @@ func _physics_process(delta):
 			calculateDirection(get_tree().get_root().get_node("World").get_node("animalGroup").get_node(targetName))
 		timedout = false
 		
-	vector = Vector2(delta * xDir * speed * waittime, delta * yDir * speed * waittime)
+	vector = Vector2(delta * xDir * (speed * currentRunCoeff) * waittime, delta * yDir * (speed * currentRunCoeff) * waittime)
 	return move_and_collide(vector)
 
 func _on_Area2D_body_entered(body):
@@ -58,3 +59,4 @@ func _on_SenseDetection_body_exited(body):
 	if(moveToTarget && body.name == targetName):
 		targetName = ""
 		moveToTarget = false
+		currentRunCoeff = 1

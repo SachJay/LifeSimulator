@@ -18,7 +18,9 @@ var startingSpeed = 1000.0
 var speed = startingSpeed
 var speedConstant = 20
 var speedCoefficient = 1.35
-var speedVariance = 100
+var speedVariance = 100.0
+var runCoeff = 10
+var currentRunCoeff = 1
 
 var startingSenseRad = 50
 var senseRad = startingSenseRad
@@ -73,6 +75,7 @@ func eat_food():
 	else:
 		foodConsumed += 1
 	moveToTarget = false
+	currentRunCoeff = 1
 
 func create_child():
 	pass #abstract this shit
@@ -117,6 +120,7 @@ func calculateDirection(body):
 	var yDist:float = body.position.y - self.position.y
 
 	moveToTarget = true
+	currentRunCoeff = runCoeff
 	targetName = body.name
 
 	if abs(xDist) < 1:
