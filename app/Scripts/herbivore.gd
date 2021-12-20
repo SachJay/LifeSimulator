@@ -1,26 +1,32 @@
 extends "res://Scripts/animal.gd"
 
+onready var herbName = $NameLabel
+
 var moveAwayTarget = false
 var preyName = ""
 var radDirection = 0
 
 func _ready():
+	on_change_trait(visible_trait)
+	traitLabel = $TraitValueLabel
 	rng.randomize()
 	waittime = timer.wait_time
 	set_sense_rad(senseRad)
 	maxX = get_tree().get_root().get_node("World").get_node("right").position.x
 	maxY = get_tree().get_root().get_node("World").get_node("down").position.y
+	herbName.text = self.name
 	
 func _physics_process(delta):
 	if moveToTarget and !get_tree().get_root().get_node("World").get_node("foodGroup").has_node(targetName):
 		moveToTarget = false
+		currentRunCoeff = 1
 	
 	if moveAwayTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(preyName):
 		moveAwayTarget = false
+		currentRunCoeff = 1
 		
 	if timedout:
 		if moveAwayTarget:
-			moveAwayTarget = true
 			calculateDirection(get_tree().get_root().get_node("World").get_node("animalGroup").get_node(preyName))
 			yDir = -yDir
 			xDir = -xDir
@@ -38,12 +44,11 @@ func _physics_process(delta):
 			yDir = cos(radDirection)
 
 		elif moveToTarget:
-			moveToTarget = true
 			calculateDirection(get_tree().get_root().get_node("World").get_node("foodGroup").get_node(targetName))
 		timedout = false
 		
 		
-	vector = Vector2(delta * xDir * speed * waittime, delta * yDir * speed * waittime)
+	vector = Vector2(delta * xDir * (speed * currentRunCoeff) * waittime, delta * yDir * (speed * currentRunCoeff) * waittime)
 	return move_and_collide(vector)
 
 func _on_Area2D_body_entered(body):
@@ -58,6 +63,7 @@ func _on_Area2D_area_entered(area):
 			foodConsumed += 1
 		area.queue_free()
 		moveToTarget = false
+		currentRunCoeff = 1
 
 func create_child():
 	var animal = load("res://Scenes/herbivore.tscn").instance()
@@ -72,6 +78,7 @@ func _on_SenseDetection_area_entered(area):
 		return
 		
 	moveToTarget = true
+	currentRunCoeff = runCoeff
 	targetName = area.name
 	calculateDirection(area)
 
@@ -80,6 +87,7 @@ func _on_SenseDetection_body_entered(body):
 		return
 	
 	moveAwayTarget = true
+	currentRunCoeff = runCoeff
 	preyName = body.name
 	calculateDirection(body)
 	yDir = -yDir
@@ -89,4 +97,5 @@ func _on_SenseDetection_body_exited(body):
 	if(moveAwayTarget && body.name == preyName):
 		preyName = ""
 		moveAwayTarget = false
+		currentRunCoeff = 1
 

@@ -29,8 +29,10 @@ func _ready():
 	totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
 	traitDropdown.add_item("Speed")
 	traitDropdown.add_item("Sense")
+	traitDropdown.add_item("Run")
+	traitDropdown.add_item("Carn")
 	traitDropdown.add_item("All")
-	get_tree().call_group("animals", "update_modulate", 0)
+	get_tree().call_group("animals", "on_change_trait", 0)
 	minX = leftWall.position.x
 	minY = upWall.position.y
 	maxX = rightWall.position.x
@@ -38,8 +40,8 @@ func _ready():
 	print(str(maxX)+" "+str(maxY))
 
 func _process(delta):
-	camera.position.x += delta * (Input.get_action_strength("run_right") - Input.get_action_strength("run_left")) * 1000
-	camera.position.y -= delta * (Input.get_action_strength("run_up") - Input.get_action_strength("run_down")) * 1000
+	camera.position.x += delta * (Input.get_action_strength("run_right") - Input.get_action_strength("run_left")) * 2000
+	camera.position.y -= delta * (Input.get_action_strength("run_up") - Input.get_action_strength("run_down")) * 2000
 	camera.zoom.x += delta * (Input.get_action_strength("zoom_in") - Input.get_action_strength("zoom_out")) * 5
 	camera.zoom.y += delta * (Input.get_action_strength("zoom_in") - Input.get_action_strength("zoom_out")) * 5
 	if(camera.zoom.x < 0.1):
@@ -88,4 +90,4 @@ func _on_LineEdit_text_entered(new_text):
 		animalSpeed = 500
 
 func _on_OptionButton_item_selected(index):
-	get_tree().call_group("animals", "update_modulate", index)
+	get_tree().call_group("animals", "on_change_trait", index)
