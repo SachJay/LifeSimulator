@@ -24,6 +24,9 @@ var animalSpeed = 500
 var averageSpeed = 2000
 var averageSense = 50
 
+var cameraX = ProjectSettings.get_setting("display/window/size/width")
+var cameraY = ProjectSettings.get_setting("display/window/size/height")
+
 func _ready():
 	totalHerb.text = "# of Herbs: " + str(get_tree().get_nodes_in_group("herb").size())
 	totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
@@ -40,26 +43,46 @@ func _ready():
 	print(str(maxX)+" "+str(maxY))
 
 func _process(delta):
-	camera.position.x += delta * (Input.get_action_strength("run_right") - Input.get_action_strength("run_left")) * 2000
-	camera.position.y -= delta * (Input.get_action_strength("run_up") - Input.get_action_strength("run_down")) * 2000
+
 	camera.zoom.x += delta * (Input.get_action_strength("zoom_in") - Input.get_action_strength("zoom_out")) * 5
 	camera.zoom.y += delta * (Input.get_action_strength("zoom_in") - Input.get_action_strength("zoom_out")) * 5
 	if(camera.zoom.x < 0.1):
 		camera.zoom.x = 0.1
-		
+	
 	if(camera.zoom.y < 0.1):
 		camera.zoom.y = 0.1
-		
+
+	if(camera.zoom.x*cameraX > maxX - minX):
+		camera.zoom.x = (maxX - minX) / cameraX
+
+	if(camera.zoom.y*cameraY > maxY - minY):
+		camera.zoom.y = (maxY - minY) / cameraY
+
+	camera.position.x += delta * (Input.get_action_strength("run_right") - Input.get_action_strength("run_left")) * 2000
+	camera.position.y -= delta * (Input.get_action_strength("run_up") - Input.get_action_strength("run_down")) * 2000
+	
+	if camera.position.y < minY+(cameraY*camera.zoom.y)/2:
+		camera.position.y = minY+(cameraY*camera.zoom.y)/2
+
+	if camera.position.y > maxY-(cameraY*camera.zoom.y)/2:
+		camera.position.y = maxY-(cameraY*camera.zoom.y)/2
+	
+	if camera.position.x < minX+(cameraX*camera.zoom.x)/2:
+		camera.position.x = minX+(cameraX*camera.zoom.x)/2
+
+	if camera.position.x > maxX-(cameraX*camera.zoom.x)/2:
+		camera.position.x = maxX-(cameraX*camera.zoom.x)/2
+
 func _on_Timer_timeout():
 	counter+=1
 
 	if counter % 1 == 0:  
-		
-		for n in range(1,20):
-			var food = load("res://Scenes/food.tscn").instance()
-			food.position.x = rng.randf_range(minX+offset, maxX-offset) 
-			food.position.y = rng.randf_range(minY+offset, maxY-offset)
-			self.get_node("foodGroup").add_child(food)
+#
+#		for n in range(1,20):
+#			var food = load("res://Scenes/food.tscn").instance()
+#			food.position.x = rng.randf_range(minX+offset, maxX-offset) 
+#			food.position.y = rng.randf_range(minY+offset, maxY-offset)
+#			self.get_node("foodGroup").add_child(food)
 		timeElapsedLabel.text = "Time Elapsed: " + str(counter)
 
 	if counter % 10 == 0:

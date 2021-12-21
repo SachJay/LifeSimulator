@@ -28,8 +28,8 @@ var speedVariance = 100.0
 var startingRunCoeff = 2.0
 var runCoeff = startingRunCoeff
 var runConstant = 0.04
-var runEnergyCoeff = 1.2
-var runVariance = 0.5
+var runEnergyCoeff = 1.1
+var runVariance = 0.3
 
 var currentRunCoeff = 1.0
 
@@ -165,13 +165,13 @@ func handle_wall_collision(body):
 func wall_tp(body):
 	if "up" in body.name:
 		self.position.y = maxY-offset
-		
+
 	elif "down" in body.name:
 		self.position.y = offset
 
 	elif "left" in body.name:
 		self.position.x = maxX-offset
-		
+
 	elif "right" in body.name:
 		self.position.x = offset
 

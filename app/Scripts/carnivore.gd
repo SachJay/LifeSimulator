@@ -9,7 +9,7 @@ func _init():
 	energy = startingEnergy
 	speedVariance = 300
 	senseVariance = 30
-	runVariance = 1.5
+	runVariance = 0.6
 	postreproduceAmount = 1
 	reproduceAmount = 1
 	maxAge = 10000
