@@ -29,6 +29,7 @@ var cameraX = ProjectSettings.get_setting("display/window/size/width")
 var cameraY = ProjectSettings.get_setting("display/window/size/height")
 
 var numOfFood = 0
+var numOfHerb = 0
 
 func _ready():
 	minX = leftWall.position.x
@@ -36,13 +37,14 @@ func _ready():
 	maxX = rightWall.position.x
 	maxY = downWall.position.y
 	
-	for n in range(1,50):
+	for _n in range(1,100):
 		create_food()
 		
-	totalHerb.text = "# of Herbs: " + str(get_tree().get_nodes_in_group("herb").size())
-	totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
+	numOfHerb = get_tree().get_nodes_in_group("herb").size()
+	totalHerb.text = "# of Herbs: " + str(numOfHerb)
 	numOfFood = get_tree().get_nodes_in_group("food").size()
 	totalFood.text = "# of Food: " + str(numOfFood)
+	totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
 	
 	traitDropdown.add_item("Speed")
 	traitDropdown.add_item("Sense")
@@ -88,13 +90,14 @@ func _on_Timer_timeout():
 	if counter % 1 == 0:  
 		timeElapsedLabel.text = "Time Elapsed: " + str(counter)
 
-	if counter % 10 == 0:
+	if counter % 5 == 0:
 		if numOfFood < 500:
-			for n in range(1,3):
+			for _n in range(1,10):
 				create_food()
 			
-		totalHerb.text = "# of Herbs: " + str(get_tree().get_nodes_in_group("herb").size())
-		totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size()/2)
+		numOfHerb = get_tree().get_nodes_in_group("herb").size()
+		totalHerb.text = "# of Herbs: " + str(numOfHerb)
+		totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
 		numOfFood = get_tree().get_nodes_in_group("food").size()
 		totalFood.text = "# of Food: " + str(numOfFood)
 
@@ -104,16 +107,16 @@ func create_food():
 	food.position.y = rng.randf_range(minY+offset, maxY-offset)
 	self.get_node("foodGroup").add_child(food)
 			
-func whenAnimalCreated(animal):
-	pass
+#func whenAnimalCreated(animal):
+#	pass
 	#averageSpeed = (averageSpeed * numOfAnimals + animal.speed) / (numOfAnimals + 1)
 	#averageSense = (averageSense * numOfAnimals + animal.senseRad) / (numOfAnimals + 1)
 	#numOfAnimals += 1
 	#averageSpeedLabel.text = "Average Speed: " + str(int(averageSpeed))
 	#averageSenseLabel.text = "Average Sense: " + str(int(averageSense))
 
-func whenAnimalDied(animal):
-	pass
+#func whenAnimalDied(animal):
+#	pass
 	#averageSpeed = (averageSpeed * numOfAnimals - animal.speed) / (numOfAnimals - 1)
 	#averageSense = (averageSense * numOfAnimals - animal.senseRad) / (numOfAnimals - 1)
 	#numOfAnimals -= 1

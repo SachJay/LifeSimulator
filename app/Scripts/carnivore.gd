@@ -3,15 +3,15 @@ extends "res://Scripts/animal.gd"
 onready var herbName = $NameLabel
 
 func _init():
-	speed = 1100.0
-	senseRad = 70
+	speed = 1050.0
+	senseRad = 65
 	startingEnergy = pow(meatEnergy, numOfTraits)
 	energy = startingEnergy
 	speedVariance = 300
 	senseVariance = 30
 	runVariance = 0.6
 	reproduceAmount = 2
-	hungryEnergyLevel = 1
+	hungryEnergyLevel = 2
 	
 	maxAge = 10000
 	
@@ -21,11 +21,11 @@ func _ready():
 	
 func _physics_process(delta):
 	
-	if moveToTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(targetName):
-		moveToTarget = false
-		currentRunCoeff = 1
-	
 	if timedout:
+		if moveToTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(targetName):
+			moveToTarget = false
+			currentRunCoeff = 1
+		
 		if !moveToTarget:
 			radianDirection = radianDirection + rng.randf_range(-PI*1/3, PI*1/3)
 		else:
@@ -35,12 +35,16 @@ func _physics_process(delta):
 	vector = Vector2(delta * cos(radianDirection) * (speed * currentRunCoeff) * waittime, delta * sin(radianDirection) * (speed * currentRunCoeff) * waittime)
 	return move_and_collide(vector)
 
+func create_child():
+	var animal = load("res://Scenes/carnivore.tscn").instance()
+	create_animal(animal)
+	
 func _on_Area2D_body_entered(body):
 	if "herb" in body.name and !isFull:
 		eat_food(body)
 		body.queue_free()
-		
-	handle_wall_collision(body)
+	else:
+		handle_wall_collision(body)
 
 func _on_SenseDetection_body_entered(body):
 	if !"herb" in body.name or isFull:

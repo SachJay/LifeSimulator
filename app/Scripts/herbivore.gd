@@ -10,16 +10,16 @@ func _ready():
 	traitLabel = $TraitValueLabel
 	herbName.text = self.name
 	
-func _physics_process(delta):
-	if moveToTarget and !get_tree().get_root().get_node("World").get_node("foodGroup").has_node(targetName):
-		moveToTarget = false
-		currentRunCoeff = 1
-	
-	if moveAwayTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(preyName):
-		moveAwayTarget = false
-		currentRunCoeff = 1
-		
+func _physics_process(delta):	
 	if timedout:
+		if moveToTarget and !get_tree().get_root().get_node("World").get_node("foodGroup").has_node(targetName):
+			moveToTarget = false
+			currentRunCoeff = 1
+	
+		if moveAwayTarget and !get_tree().get_root().get_node("World").get_node("animalGroup").has_node(preyName):
+			moveAwayTarget = false
+			currentRunCoeff = 1
+		
 		if moveAwayTarget:
 			calculateDirection(get_tree().get_root().get_node("World").get_node("animalGroup").get_node(preyName))
 			radianDirection += PI

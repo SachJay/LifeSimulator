@@ -12,12 +12,13 @@ onready var traitLabel = $TraitValueLabel
 var waittime
 var rng = RandomNumberGenerator.new()
 var timedout = false
-var numOfTraits = 3
+var numOfTraits = 3.0
 
 ## VARIABLES ##
-var startingEnergy = pow(450, numOfTraits)
+var startingEnergy = 10000
 var energy = startingEnergy
-var meatEnergy = 500
+var meatEnergy = 12000
+var energyCost = 100
 
 #Speed
 var startingSpeed = 1000.0
@@ -48,11 +49,11 @@ var radianDirection = 0
 
 var moveToTarget = false
 var targetName = ""
-var offset = 25
+var offset = 200
 
 #reproduction variables
 var reproduceAmount = 2
-var hungryEnergyLevel = 1
+var hungryEnergyLevel = 2
 var isFull = false
 
 var age = 0
@@ -73,28 +74,29 @@ func common_ready():
 	upWall = get_tree().get_root().get_node("World").get_node("up").position.y
 	rightWall = get_tree().get_root().get_node("World").get_node("right").position.x
 	downWall = get_tree().get_root().get_node("World").get_node("down").position.y
+	energyCost = get_energy_cost()
 	
 func _on_Timer_timeout(): 
 	timedout = true
 	age += 1
-	energy -= get_energy_cost()
+	energy -= energyCost
 	
 	if age > maxAge:
-		get_tree().get_root().get_node("World").whenAnimalDied(self)
+#		get_tree().get_root().get_node("World").whenAnimalDied(self)
 		self.queue_free()
 	
 	if energy < startingEnergy * hungryEnergyLevel: 
 		isFull = false
 		
 	if energy < 0: 
-		get_tree().get_root().get_node("World").whenAnimalDied(self)
+#		get_tree().get_root().get_node("World").whenAnimalDied(self)
 		self.queue_free()
 
 func get_energy_cost():
-	return pow(speed/speedConstant, speedCoefficient) * pow(senseRad/senseConstant, senseCoefficient) * pow(runCoeff/runConstant, runEnergyCoeff)
+	return pow( pow(speed/speedConstant, speedCoefficient) * pow(senseRad/senseConstant, senseCoefficient) * pow(runCoeff*2/runConstant, runEnergyCoeff), 1 / numOfTraits )
 
 func eat_food(food):
-	if energy > startingEnergy*reproduceAmount and isFull == false:
+	if energy > startingEnergy * reproduceAmount and isFull == false: #and get_tree().get_root().get_node("World").numOfHerb < 500:
 		isFull = true
 		create_child()
 	else:
@@ -109,7 +111,7 @@ func create_animal(animal):
 	set_next_gen_traits(animal)
 	
 	get_tree().get_root().get_node("World").get_node("animalGroup").call_deferred("add_child", animal)
-	get_tree().get_root().get_node("World").whenAnimalCreated(animal)
+#	get_tree().get_root().get_node("World").whenAnimalCreated(animal)
 
 func map(inputLow, inputHigh, outputLow, outputHigh, value):
 	#print(str(inputLow)+" "+str(inputHigh)+" "+str(value))
@@ -131,11 +133,11 @@ func map_trait(coefficient, constant, starting, value):
 	return color
 
 func calculate_map_range_low(coeff, constVar, starting):
-	var variance =  startingEnergy / (3000000.0 * pow(coeff, 3))
+	var variance =  startingEnergy / (300.0 * pow(coeff, 3))
 	return starting - variance * constVar * 2 / 5
 
 func calculate_map_range_high(coeff, constVar, starting):
-	var variance =  startingEnergy / (3000000.0 * pow(coeff, 3))
+	var variance =  startingEnergy / (300.0 * pow(coeff, 3))
 	return starting + variance * constVar * 11 / 5
 
 func distance(x1, y1, x2, y2):
@@ -224,3 +226,5 @@ func on_change_trait(trait):
 	visible_trait = trait
 	self.modulate = visualise_trait(trait)
 	traitLabel.text = set_trait_value_label(trait)
+
+#270+ is limit
