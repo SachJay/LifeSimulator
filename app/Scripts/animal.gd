@@ -1,7 +1,9 @@
 extends KinematicBody2D
 
-var maxX = 100
-var maxY = 100
+var leftWall
+var upWall
+var rightWall
+var downWall
 
 #setup variables
 onready var timer = $Timer
@@ -10,12 +12,12 @@ onready var traitLabel = $TraitValueLabel
 var waittime
 var rng = RandomNumberGenerator.new()
 var timedout = false
-var foodConsumed = 0
 var numOfTraits = 3
 
 ## VARIABLES ##
 var startingEnergy = pow(450, numOfTraits)
 var energy = startingEnergy
+var meatEnergy = 500
 
 #Speed
 var startingSpeed = 1000.0
@@ -41,15 +43,17 @@ var senseCoefficient = 1
 var senseVariance = 10
 
 #movement variables
-var xDir = 0.0
-var yDir = 0.0
 var vector
+var radianDirection = 0
 
 var moveToTarget = false
 var targetName = ""
 var offset = 25
-var reproduceAmount = 1
-var postreproduceAmount = 0
+
+#reproduction variables
+var reproduceAmount = 2
+var hungryEnergyLevel = 1
+var isFull = false
 
 var age = 0
 var maxAge = 500
@@ -57,6 +61,19 @@ var maxAge = 500
 enum {SPEED, SENSE, RUN, CARN, ALL}
 var visible_trait = SPEED
 
+var nutritionalValue = pow(meatEnergy, numOfTraits)
+
+func common_ready():
+	on_change_trait(visible_trait)
+	rng.randomize()
+	waittime = timer.wait_time
+	set_sense_rad(senseRad)
+	
+	leftWall = get_tree().get_root().get_node("World").get_node("left").position.x
+	upWall = get_tree().get_root().get_node("World").get_node("up").position.y
+	rightWall = get_tree().get_root().get_node("World").get_node("right").position.x
+	downWall = get_tree().get_root().get_node("World").get_node("down").position.y
+	
 func _on_Timer_timeout(): 
 	timedout = true
 	age += 1
@@ -66,31 +83,33 @@ func _on_Timer_timeout():
 		get_tree().get_root().get_node("World").whenAnimalDied(self)
 		self.queue_free()
 	
+	if energy < startingEnergy * hungryEnergyLevel: 
+		isFull = false
+		
 	if energy < 0: 
-		consume_food()
-		energy = startingEnergy
+		get_tree().get_root().get_node("World").whenAnimalDied(self)
+		self.queue_free()
 
 func get_energy_cost():
 	return pow(speed/speedConstant, speedCoefficient) * pow(senseRad/senseConstant, senseCoefficient) * pow(runCoeff/runConstant, runEnergyCoeff)
 
-func consume_food():
-	if foodConsumed == 0:
-		get_tree().get_root().get_node("World").whenAnimalDied(self)
-		self.queue_free()
-	else:
-		foodConsumed -= 1
-
-func eat_food():
-	if foodConsumed > reproduceAmount:
-		foodConsumed = postreproduceAmount
+func eat_food(food):
+	if energy > startingEnergy*reproduceAmount and isFull == false:
+		isFull = true
 		create_child()
 	else:
-		foodConsumed += 1
+		energy += food.nutritionalValue
 	moveToTarget = false
 	currentRunCoeff = 1
 
 func create_child():
-	pass #abstract this shit
+	pass
+	
+func create_animal(animal):
+	set_next_gen_traits(animal)
+	
+	get_tree().get_root().get_node("World").get_node("animalGroup").call_deferred("add_child", animal)
+	get_tree().get_root().get_node("World").whenAnimalCreated(animal)
 
 func map(inputLow, inputHigh, outputLow, outputHigh, value):
 	#print(str(inputLow)+" "+str(inputHigh)+" "+str(value))
@@ -133,22 +152,7 @@ func calculateDirection(body):
 	var xDist:float = body.position.x - self.position.x
 	var yDist:float = body.position.y - self.position.y
 
-	if abs(xDist) < 1:
-		xDir = 0.0
-		yDir = 1.0 / 2.0
-		return
-
-	if abs(yDist) < 1:
-		xDir = 1.0 / 2.0
-		yDir = 0
-		return
-
-	if abs(xDist) > abs(yDist):
-		xDir = xDist / abs(xDist) / 2.0
-		yDir = yDist / abs(xDist) / 2.0
-	else:
-		yDir = yDist / abs(yDist) / 2.0
-		xDir = xDist / abs(yDist) / 2.0
+	radianDirection = atan2(yDist, xDist)
 		
 func trait_formatter(input, minInput, maxInput):
 	if input < minInput:
@@ -160,22 +164,23 @@ func trait_formatter(input, minInput, maxInput):
 	return input
 	
 func handle_wall_collision(body):
-	pass
+	wall_tp(body)
 
 func wall_tp(body):
 	if "up" in body.name:
-		self.position.y = maxY-offset
+		self.position.y = downWall-offset
 
 	elif "down" in body.name:
-		self.position.y = offset
+		self.position.y = upWall+offset
 
 	elif "left" in body.name:
-		self.position.x = maxX-offset
+		self.position.x = rightWall-offset
 
 	elif "right" in body.name:
-		self.position.x = offset
+		self.position.x = leftWall+offset
 
 func set_next_gen_traits(animal):
+	rng.randomize()
 	animal.position = self.position
 	animal.speed = trait_formatter(speed + rng.randf_range(-speedVariance, speedVariance), 250, 4000)
 	animal.runCoeff = trait_formatter(runCoeff + rng.randf_range(-runVariance, runVariance), 1, 5)

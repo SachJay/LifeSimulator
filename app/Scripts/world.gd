@@ -2,6 +2,7 @@ extends Node
 
 onready var totalHerb = $CanvasLayer2/TotalHerb
 onready var totalCarn = $CanvasLayer2/TotalCarn
+onready var totalFood = $CanvasLayer2/TotalFood
 onready var timeElapsedLabel = $CanvasLayer2/TimeElapsedLabel
 onready var camera = $MainCamera
 onready var traitDropdown = $CanvasLayer2/OptionButton
@@ -16,7 +17,7 @@ var minX
 var minY
 var maxX
 var maxY
-var offset = 75
+var offset = 100
 
 #Animal Variables
 var animalSpeed = 500
@@ -27,20 +28,28 @@ var averageSense = 50
 var cameraX = ProjectSettings.get_setting("display/window/size/width")
 var cameraY = ProjectSettings.get_setting("display/window/size/height")
 
+var numOfFood = 0
+
 func _ready():
+	minX = leftWall.position.x
+	minY = upWall.position.y
+	maxX = rightWall.position.x
+	maxY = downWall.position.y
+	
+	for n in range(1,50):
+		create_food()
+		
 	totalHerb.text = "# of Herbs: " + str(get_tree().get_nodes_in_group("herb").size())
 	totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
+	numOfFood = get_tree().get_nodes_in_group("food").size()
+	totalFood.text = "# of Food: " + str(numOfFood)
+	
 	traitDropdown.add_item("Speed")
 	traitDropdown.add_item("Sense")
 	traitDropdown.add_item("Run")
 	traitDropdown.add_item("Carn")
 	traitDropdown.add_item("All")
 	get_tree().call_group("animals", "on_change_trait", 0)
-	minX = leftWall.position.x
-	minY = upWall.position.y
-	maxX = rightWall.position.x
-	maxY = downWall.position.y
-	print(str(maxX)+" "+str(maxY))
 
 func _process(delta):
 
@@ -77,18 +86,24 @@ func _on_Timer_timeout():
 	counter+=1
 
 	if counter % 1 == 0:  
-#
-#		for n in range(1,20):
-#			var food = load("res://Scenes/food.tscn").instance()
-#			food.position.x = rng.randf_range(minX+offset, maxX-offset) 
-#			food.position.y = rng.randf_range(minY+offset, maxY-offset)
-#			self.get_node("foodGroup").add_child(food)
 		timeElapsedLabel.text = "Time Elapsed: " + str(counter)
 
 	if counter % 10 == 0:
+		if numOfFood < 500:
+			for n in range(1,3):
+				create_food()
+			
 		totalHerb.text = "# of Herbs: " + str(get_tree().get_nodes_in_group("herb").size())
 		totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size()/2)
+		numOfFood = get_tree().get_nodes_in_group("food").size()
+		totalFood.text = "# of Food: " + str(numOfFood)
 
+func create_food():
+	var food = load("res://Scenes/food.tscn").instance()
+	food.position.x = rng.randf_range(minX+offset, maxX-offset) 
+	food.position.y = rng.randf_range(minY+offset, maxY-offset)
+	self.get_node("foodGroup").add_child(food)
+			
 func whenAnimalCreated(animal):
 	pass
 	#averageSpeed = (averageSpeed * numOfAnimals + animal.speed) / (numOfAnimals + 1)

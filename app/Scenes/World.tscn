@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/walls.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/herbivore.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Font/Bodo Amat.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Scripts/world.gd" type="Script" id=4]
-[ext_resource path="res://Scenes/food.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/carnivore.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Theme" id=1]
@@ -19,88 +18,154 @@ script = ExtResource( 4 )
 
 [node name="animalGroup" type="Node" parent="."]
 
-[node name="herb1" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2582, 928 )
+[node name="herb47" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5094, -1659 )
 
-[node name="herb11" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 3141, 686 )
+[node name="herb48" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5653, -1901 )
 
-[node name="herb12" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 3291, 812 )
+[node name="herb49" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5803, -1775 )
 
-[node name="herb13" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 3349, 1013 )
+[node name="herb50" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5861, -1574 )
 
-[node name="herb14" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 3477, 1284 )
+[node name="herb51" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5989, -1303 )
 
-[node name="herb15" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2766, 1439 )
+[node name="herb52" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5278, -1148 )
 
-[node name="herb16" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2488, 1627 )
+[node name="herb53" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5000, -960 )
 
-[node name="herb17" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2158, 1407 )
+[node name="herb54" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4670, -1180 )
 
-[node name="herb18" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 1608, 1313 )
+[node name="herb55" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4120, -1274 )
 
-[node name="herb19" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 1546, 1023 )
+[node name="herb56" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4058, -1564 )
 
-[node name="herb20" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 1551, 585 )
+[node name="herb57" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4063, -2002 )
 
-[node name="herb21" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2089, 271 )
+[node name="herb58" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4601, -2316 )
 
-[node name="herb22" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2527, 328 )
+[node name="herb59" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5039, -2259 )
 
-[node name="herb23" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2047, 441 )
+[node name="herb60" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4559, -2146 )
 
-[node name="herb2" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2374, 558 )
+[node name="herb61" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4886, -2029 )
 
-[node name="herb3" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 1879, 730 )
+[node name="herb62" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4391, -1857 )
 
-[node name="herb4" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2004, 1136 )
+[node name="herb63" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4516, -1451 )
 
-[node name="herb5" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2881, 678 )
+[node name="herb64" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5393, -1909 )
 
-[node name="herb6" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2918, 1085 )
+[node name="herb65" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5430, -1502 )
 
-[node name="herb7" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2653, 1130 )
+[node name="herb66" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5165, -1457 )
 
-[node name="herb8" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2259, 1095 )
+[node name="herb67" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 4771, -1492 )
 
-[node name="herb9" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2983, 1272 )
+[node name="herb68" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5495, -1315 )
 
-[node name="herb10" parent="animalGroup" instance=ExtResource( 2 )]
-position = Vector2( 2607, 678 )
+[node name="herb69" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( 5119, -1909 )
+
+[node name="herb93" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3641, 2612 )
+
+[node name="herb94" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3082, 2370 )
+
+[node name="herb95" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -2932, 2496 )
+
+[node name="herb96" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -2874, 2697 )
+
+[node name="herb97" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -2746, 2968 )
+
+[node name="herb98" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3457, 3123 )
+
+[node name="herb99" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3735, 3311 )
+
+[node name="herb100" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4065, 3091 )
+
+[node name="herb101" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4615, 2997 )
+
+[node name="herb102" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4677, 2707 )
+
+[node name="herb103" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4672, 2269 )
+
+[node name="herb104" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4134, 1955 )
+
+[node name="herb105" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3696, 2012 )
+
+[node name="herb106" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4176, 2125 )
+
+[node name="herb107" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3849, 2242 )
+
+[node name="herb108" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4344, 2414 )
+
+[node name="herb109" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -4219, 2820 )
+
+[node name="herb110" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3342, 2362 )
+
+[node name="herb111" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3305, 2769 )
+
+[node name="herb112" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3570, 2814 )
+
+[node name="herb113" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3964, 2779 )
+
+[node name="herb114" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3240, 2956 )
+
+[node name="herb115" parent="animalGroup" instance=ExtResource( 2 )]
+position = Vector2( -3616, 2362 )
 
 [node name="carnivore" parent="animalGroup" instance=ExtResource( 6 )]
-position = Vector2( 2184, 740 )
-
-[node name="carnivore3" parent="animalGroup" instance=ExtResource( 6 )]
-position = Vector2( 2487, 1389 )
+position = Vector2( 4734, -1709 )
 
 [node name="carnivore2" parent="animalGroup" instance=ExtResource( 6 )]
-position = Vector2( 3034, 870 )
+position = Vector2( -4106, 2313 )
+
+[node name="carnivore3" parent="animalGroup" instance=ExtResource( 6 )]
+position = Vector2( -3632, 2988 )
 
 [node name="foodGroup" type="Node" parent="."]
-
-[node name="food" parent="foodGroup" instance=ExtResource( 5 )]
-position = Vector2( -3946, -2009 )
 
 [node name="left" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
@@ -189,6 +254,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TotalFood" type="Label" parent="CanvasLayer2"]
+modulate = Color( 0, 0, 0, 1 )
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 1541.0
+margin_top = 119.0
+margin_right = 1839.0
+margin_bottom = 146.0
+theme = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
+text = "# of Food: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="LineEdit" type="LineEdit" parent="CanvasLayer2"]
 margin_left = 3241.0
 margin_top = 597.0
@@ -200,17 +279,16 @@ __meta__ = {
 }
 
 [node name="OptionButton" type="OptionButton" parent="CanvasLayer2"]
-margin_left = 1574.0
-margin_top = 140.0
-margin_right = 1722.0
-margin_bottom = 180.0
+margin_left = 1579.0
+margin_top = 168.0
+margin_right = 1727.0
+margin_bottom = 208.0
 text = "asfa"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MainCamera" type="Camera2D" parent="."]
-position = Vector2( -3984, -2020 )
 current = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
