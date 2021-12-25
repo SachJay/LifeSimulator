@@ -5,11 +5,17 @@ onready var totalCarn = $CanvasLayer2/TotalCarn
 onready var totalFood = $CanvasLayer2/TotalFood
 onready var timeElapsedLabel = $CanvasLayer2/TimeElapsedLabel
 onready var camera = $MainCamera
-onready var traitDropdown = $CanvasLayer2/OptionButton
+
+onready var animalTraitDropdown = $CanvasLayer2/OptionButton
+onready var foodTraitDropdown = $CanvasLayer2/OptionButton2
+
 onready var leftWall = $left
 onready var upWall = $up
 onready var rightWall = $right
 onready var downWall = $down
+
+var food_trait_value = 0
+
 var rng = RandomNumberGenerator.new()
 
 var counter = 0
@@ -46,11 +52,16 @@ func _ready():
 	totalFood.text = "# of Food: " + str(numOfFood)
 	totalCarn.text = "# of Carns: " + str(get_tree().get_nodes_in_group("carn").size())
 	
-	traitDropdown.add_item("Speed")
-	traitDropdown.add_item("Sense")
-	traitDropdown.add_item("Run")
-	traitDropdown.add_item("Carn")
-	traitDropdown.add_item("All")
+	animalTraitDropdown.add_item("Speed")
+	animalTraitDropdown.add_item("Sense")
+	animalTraitDropdown.add_item("Run")
+	animalTraitDropdown.add_item("Carn")
+	animalTraitDropdown.add_item("All")
+	
+	foodTraitDropdown.add_item("Nutrient")
+	foodTraitDropdown.add_item("Attractiveness")
+	foodTraitDropdown.add_item("Eaten Chance")
+	
 	get_tree().call_group("animals", "on_change_trait", 0)
 
 func _process(delta):
@@ -103,6 +114,10 @@ func _on_Timer_timeout():
 
 func create_food():
 	var food = load("res://Scenes/food.tscn").instance()
+	food.nutritionalValue = rng.randf_range(9000, 11000)
+	food.appetizingValue = rng.randf_range(60, 90)
+	food.calculate_chance()
+	food.visible_trait = food_trait_value
 	food.position.x = rng.randf_range(minX+offset, maxX-offset) 
 	food.position.y = rng.randf_range(minY+offset, maxY-offset)
 	self.get_node("foodGroup").add_child(food)
@@ -132,3 +147,7 @@ func _on_LineEdit_text_entered(new_text):
 
 func _on_OptionButton_item_selected(index):
 	get_tree().call_group("animals", "on_change_trait", index)
+
+func _on_OptionButton2_item_selected(index):
+	food_trait_value = index
+	get_tree().call_group("food", "on_change_trait", index)

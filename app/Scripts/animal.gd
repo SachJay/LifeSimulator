@@ -62,7 +62,7 @@ var maxAge = 500
 enum {SPEED, SENSE, RUN, CARN, ALL}
 var visible_trait = SPEED
 
-var nutritionalValue = pow(meatEnergy, numOfTraits)
+var nutritionalValue = meatEnergy
 
 func common_ready():
 	on_change_trait(visible_trait)

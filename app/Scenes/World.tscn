@@ -207,11 +207,20 @@ __meta__ = {
 }
 
 [node name="OptionButton" type="OptionButton" parent="CanvasLayer2"]
-margin_left = 1579.0
-margin_top = 168.0
-margin_right = 1727.0
-margin_bottom = 208.0
+margin_left = 1480.0
+margin_top = 170.0
+margin_right = 1628.0
+margin_bottom = 210.0
 text = "asfa"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton2" type="OptionButton" parent="CanvasLayer2"]
+margin_left = 1640.0
+margin_top = 170.0
+margin_right = 1788.0
+margin_bottom = 210.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -222,3 +231,4 @@ current = true
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="text_entered" from="CanvasLayer2/LineEdit" to="." method="_on_LineEdit_text_entered"]
 [connection signal="item_selected" from="CanvasLayer2/OptionButton" to="." method="_on_OptionButton_item_selected"]
+[connection signal="item_selected" from="CanvasLayer2/OptionButton2" to="." method="_on_OptionButton2_item_selected"]

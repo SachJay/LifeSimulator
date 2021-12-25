@@ -37,7 +37,7 @@ func _on_Area2D_body_entered(body):
 	handle_wall_collision(body)
 		
 func _on_Area2D_area_entered(area):
-	if "food" in area.name and !isFull:
+	if "food" in area.name and !isFull and (desire_to_eat(area) or moveToTarget):
 		eat_food(area)
 		area.queue_free()
 
@@ -46,13 +46,22 @@ func create_child():
 	create_animal(animal)
 	
 func _on_SenseDetection_area_entered(area):
-	if moveToTarget or moveAwayTarget or !"food" in area.name or isFull:
+	if moveToTarget or moveAwayTarget or !"food" in area.name or !desire_to_eat(area):
 		return
 		
 	moveToTarget = true
 	currentRunCoeff = runCoeff
 	targetName = area.name
 	calculateDirection(area)
+
+func desire_to_eat(food):
+	if isFull:
+		return false
+
+	if rng.randf_range(0, 100) < food.chanceOfGettingEaten:
+		return true
+	else:
+		return false
 
 func _on_SenseDetection_body_entered(body):
 	if !"carn" in body.name:

@@ -5,7 +5,7 @@ onready var herbName = $NameLabel
 func _init():
 	speed = 1050.0
 	senseRad = 65
-	startingEnergy = pow(meatEnergy, numOfTraits)
+	startingEnergy = meatEnergy
 	energy = startingEnergy
 	speedVariance = 300
 	senseVariance = 30
