@@ -43,7 +43,19 @@ func _ready():
 	maxX = rightWall.position.x
 	maxY = downWall.position.y
 	
-	for _n in range(1,100):
+	for _n in range(0,30):
+		var animal = load("res://Scenes/carnivore.tscn").instance()
+		animal.position.x = rng.randf_range(minX+offset, maxX-offset) 
+		animal.position.y = rng.randf_range(minY+offset, maxY-offset)
+		self.get_node("animalGroup").call_deferred("add_child", animal)
+	
+	for _n in range(0,150):
+		var animal = load("res://Scenes/herbivore.tscn").instance()
+		animal.position.x = rng.randf_range(minX+offset, maxX-offset) 
+		animal.position.y = rng.randf_range(minY+offset, maxY-offset)
+		self.get_node("animalGroup").call_deferred("add_child", animal)
+		
+	for _n in range(1,300):
 		create_food()
 		
 	numOfHerb = get_tree().get_nodes_in_group("herb").size()
@@ -102,7 +114,7 @@ func _on_Timer_timeout():
 		timeElapsedLabel.text = "Time Elapsed: " + str(counter)
 
 	if counter % 5 == 0:
-		if numOfFood < 500:
+		if numOfFood < 100:
 			for _n in range(1,10):
 				create_food()
 			

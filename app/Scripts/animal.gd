@@ -15,16 +15,16 @@ var timedout = false
 var numOfTraits = 3.0
 
 ## VARIABLES ##
-var startingEnergy = 10000
+var startingEnergy = 7500
 var energy = startingEnergy
-var meatEnergy = 12000
+var meatEnergy = 15000
 var energyCost = 100
 
 #Speed
 var startingSpeed = 1000.0
 var speed = startingSpeed
 var speedConstant = 20
-var speedCoefficient = 1.35
+var speedCoefficient = 1.5
 var speedVariance = 100.0
 
 #Run 
@@ -40,7 +40,7 @@ var currentRunCoeff = 1.0
 var startingSenseRad = 50
 var senseRad = startingSenseRad
 var senseConstant = 1
-var senseCoefficient = 1
+var senseCoefficient = 1.3
 var senseVariance = 10
 
 #movement variables
@@ -52,12 +52,13 @@ var targetName = ""
 var offset = 200
 
 #reproduction variables
-var reproduceAmount = 2
-var hungryEnergyLevel = 2
+var reproduceAmount = 3
+var hungryEnergyLevel = 1
 var isFull = false
 
 var age = 0
 var maxAge = 500
+var deadAge = -1
 
 enum {SPEED, SENSE, RUN, CARN, ALL}
 var visible_trait = SPEED
@@ -81,26 +82,25 @@ func _on_Timer_timeout():
 	age += 1
 	energy -= energyCost
 	
-	if age > maxAge:
-#		get_tree().get_root().get_node("World").whenAnimalDied(self)
-		self.queue_free()
+	if deadAge == -1 and (age > maxAge or energy < 0):
+		deadAge = age
 	
 	if energy < startingEnergy * hungryEnergyLevel: 
 		isFull = false
 		
-	if energy < 0: 
-#		get_tree().get_root().get_node("World").whenAnimalDied(self)
+	if deadAge != -1 and deadAge + 15 < age:
 		self.queue_free()
 
 func get_energy_cost():
 	return pow( pow(speed/speedConstant, speedCoefficient) * pow(senseRad/senseConstant, senseCoefficient) * pow(runCoeff*2/runConstant, runEnergyCoeff), 1 / numOfTraits )
 
 func eat_food(food):
+	energy += food.nutritionalValue
+
 	if energy > startingEnergy * reproduceAmount and isFull == false: #and get_tree().get_root().get_node("World").numOfHerb < 500:
 		isFull = true
 		create_child()
-	else:
-		energy += food.nutritionalValue
+		
 	moveToTarget = false
 	currentRunCoeff = 1
 
@@ -129,7 +129,7 @@ func map(inputLow, inputHigh, outputLow, outputHigh, value):
 
 func map_trait(coefficient, constant, starting, value):
 	#print(str(calculate_map_range_low(coefficient, constant, starting)) +"  "+str(calculate_map_range_high(coefficient, constant, starting)))
-	var color = map(calculate_map_range_low(coefficient, constant, starting), calculate_map_range_high(coefficient, constant, starting), 0, 1, value)
+	var color = map(calculate_map_range_low(coefficient, constant, starting), calculate_map_range_high(coefficient, constant, starting), 0, 0.83, value)
 	return color
 
 func calculate_map_range_low(coeff, constVar, starting):
@@ -192,11 +192,11 @@ func set_next_gen_traits(animal):
 
 func visualise_trait(trait):
 	if trait == SPEED:
-		return Color(map_trait(speedCoefficient, speedConstant, startingSpeed, speed), 0, 0)
+		return Color.from_hsv(map_trait(speedCoefficient, speedConstant, startingSpeed, speed), 0.70, 0.66, 0.8)
 	elif trait == SENSE:
-		return Color(0, map_trait(senseCoefficient, senseConstant, startingSenseRad, senseRad), 0)
+		return Color.from_hsv(map_trait(senseCoefficient, senseConstant, startingSenseRad, senseRad), 0.70, 0.66, 0.8)
 	elif trait == RUN:
-		return Color(0, 0, map_trait(runEnergyCoeff, runConstant, startingRunCoeff, runCoeff))
+		return Color.from_hsv(map_trait(runEnergyCoeff, runConstant, startingRunCoeff, runCoeff), 0.70, 0.66, 0.8)
 	elif trait == CARN:
 		if "carn" in self.name:
 			return Color(0, 0, 0)

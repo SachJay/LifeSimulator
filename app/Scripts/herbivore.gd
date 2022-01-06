@@ -29,9 +29,10 @@ func _physics_process(delta):
 		elif moveToTarget:
 			calculateDirection(get_tree().get_root().get_node("World").get_node("foodGroup").get_node(targetName))
 		timedout = false
-		
-	vector = Vector2(delta * cos(radianDirection) * (speed * currentRunCoeff) * waittime, delta * sin(radianDirection) * (speed * currentRunCoeff) * waittime)
-	return move_and_collide(vector)
+	
+	if deadAge == -1:
+		vector = Vector2(delta * cos(radianDirection) * (speed * currentRunCoeff) * waittime, delta * sin(radianDirection) * (speed * currentRunCoeff) * waittime)
+		return move_and_collide(vector)
 
 func _on_Area2D_body_entered(body):
 	handle_wall_collision(body)
@@ -39,7 +40,7 @@ func _on_Area2D_body_entered(body):
 func _on_Area2D_area_entered(area):
 	if "food" in area.name and !isFull and (desire_to_eat(area) or moveToTarget):
 		eat_food(area)
-		area.queue_free()
+		area.eaten()
 
 func create_child():
 	var animal = load("res://Scenes/herbivore.tscn").instance()
@@ -58,7 +59,7 @@ func desire_to_eat(food):
 	if isFull:
 		return false
 
-	if rng.randf_range(0, 100) < food.chanceOfGettingEaten:
+	if rng.randf_range(0, 100) < food.chanceOfGettingEaten + (33 if energy < startingEnergy else 0):
 		return true
 	else:
 		return false

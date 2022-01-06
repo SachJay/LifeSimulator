@@ -42,5 +42,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="NameLabel" type="Label" parent="."]
+margin_left = -8.0
+margin_top = -24.0
+margin_right = 32.0
+margin_bottom = 7.0
+text = "Food
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

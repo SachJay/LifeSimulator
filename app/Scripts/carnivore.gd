@@ -11,7 +11,7 @@ func _init():
 	senseVariance = 30
 	runVariance = 0.6
 	reproduceAmount = 2
-	hungryEnergyLevel = 2
+	hungryEnergyLevel = 1
 	
 	maxAge = 10000
 	
@@ -32,8 +32,9 @@ func _physics_process(delta):
 			calculateDirection(get_tree().get_root().get_node("World").get_node("animalGroup").get_node(targetName))
 		timedout = false
 	
-	vector = Vector2(delta * cos(radianDirection) * (speed * currentRunCoeff) * waittime, delta * sin(radianDirection) * (speed * currentRunCoeff) * waittime)
-	return move_and_collide(vector)
+	if deadAge == -1:
+		vector = Vector2(delta * cos(radianDirection) * (speed * currentRunCoeff) * waittime, delta * sin(radianDirection) * (speed * currentRunCoeff) * waittime)
+		return move_and_collide(vector)
 
 func create_child():
 	var animal = load("res://Scenes/carnivore.tscn").instance()
