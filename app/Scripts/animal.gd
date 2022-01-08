@@ -17,7 +17,7 @@ var numOfTraits = 3.0
 ## VARIABLES ##
 var startingEnergy = 7500
 var energy = startingEnergy
-var meatEnergy = 15000
+var meatEnergy = 25000
 var energyCost = 100
 
 #Speed

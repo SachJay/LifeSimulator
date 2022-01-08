@@ -21,26 +21,26 @@ script = ExtResource( 4 )
 
 [node name="left" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( -8290, 1699 )
-scale = Vector2( 0.5, 15 )
+position = Vector2( -8899, -407 )
+scale = Vector2( 0.5, 12 )
 collision_layer = 1
 
 [node name="up" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 79, -2882 )
-scale = Vector2( 150, 0.1 )
+position = Vector2( -1915, -4011 )
+scale = Vector2( 125, 0.1 )
 collision_layer = 1
 
 [node name="right" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 3520, 352 )
-scale = Vector2( 0.5, 15 )
+position = Vector2( 5165, -321 )
+scale = Vector2( 0.5, 12 )
 collision_layer = 1
 
 [node name="down" parent="." instance=ExtResource( 1 )]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 11, 4141 )
-scale = Vector2( 150, 0.1 )
+position = Vector2( -1891, 3484 )
+scale = Vector2( 125, 0.1 )
 collision_layer = 1
 
 [node name="Timer" type="Timer" parent="."]
@@ -153,16 +153,16 @@ __meta__ = {
 current = true
 
 [node name="Envirnoment" parent="." instance=ExtResource( 2 )]
-position = Vector2( -6116, -1130 )
+position = Vector2( -5953, -2056 )
 scale = Vector2( 10, 10 )
 
 [node name="Envirnoment2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 121, -1114 )
-scale = Vector2( 7, 7 )
+position = Vector2( 3968, -1915 )
+scale = Vector2( 7, 11 )
 
 [node name="Envirnoment3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -1449, 2570 )
-scale = Vector2( 10, 10 )
+position = Vector2( -1479, 1591 )
+scale = Vector2( 14, 10 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="text_entered" from="CanvasLayer2/LineEdit" to="." method="_on_LineEdit_text_entered"]

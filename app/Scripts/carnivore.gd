@@ -6,13 +6,13 @@ func _init():
 	speed = 1050.0
 	senseRad = 65
 	startingEnergy = meatEnergy
-	energy = startingEnergy
+	energy = startingEnergy*3
 	speedVariance = 300
 	senseVariance = 30
 	runVariance = 0.6
-	reproduceAmount = 2
-	hungryEnergyLevel = 1
-	
+	reproduceAmount = 3
+	hungryEnergyLevel = 2
+	isFull = true
 	maxAge = 10000
 	
 func _ready():
